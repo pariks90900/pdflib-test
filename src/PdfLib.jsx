@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, createContext, useState } from "react";
 import PdfRenderer from "./PdfRenderer";
+
+export const UserDataContext = createContext(undefined);
 
 function PdfLib() {
   let fileChange = null;
@@ -14,15 +16,19 @@ function PdfLib() {
     return e.target.files[0];
   };
 
-  useEffect(() => {
-    pdfDep = fileChange;
-    console.log("pdfdep" + pdfDep);
-  }, [fileChange]);
+  // useEffect(() => {
+  //   pdfDep = fileChange;
+  //   console.log("pdfdep" + pdfDep);
+  // }, [fileChange]);
+
+  const [userData, setUserData] = useState({ nme: "mane" });
 
   return (
-    <div>
-      <PdfRenderer />
-    </div>
+    <UserDataContext.Provider value={{ userData, setUserData }}>
+      <div>
+        <PdfRenderer />
+      </div>
+    </UserDataContext.Provider>
   );
 }
 
