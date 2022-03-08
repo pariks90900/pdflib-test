@@ -58,6 +58,10 @@ function PdfRenderer() {
 
   print(arrayBuf);
   //* PDFLIB
+  const [userX, setUserX] = useState();
+  const [userY, setUserY] = useState();
+  const [userFSize, setUserFSize] = useState();
+  const [userVal, setUserVal] = useState();
   const pdfUpdateFunction = async () => {
     const pdfDoc = await PDFDocument.load(arrayBuf);
 
@@ -66,14 +70,20 @@ function PdfRenderer() {
     const pages = pdfDoc.getPages();
 
     const firstPage = pages[0];
-
     const { width, height } = firstPage.getSize();
 
-    print(`${width} ${height} `);
-    firstPage.drawText("Parikshit Dipak Thale", {
-      x: width / 2,
-      y: height / 2,
+    // print(`${width} ${height} `);
+    // firstPage.drawText("Parikshit Dipak Thale", {
+    //   x: width / 2,
+    //   y: height / 2,
+    //   font: timesRomen,
+    //   color: rgb(1.0, 0.5, 0.5),
+    // });
+    firstPage.drawText(userVal, {
+      x: Number(userX),
+      y: Number(userY),
       font: timesRomen,
+      size: Number(userFSize),
       color: rgb(1.0, 0.5, 0.5),
     });
 
@@ -93,6 +103,27 @@ function PdfRenderer() {
           <PDFReader data={arrayBuf} page={1} scale={scaleVal} />
           {/* <PDFReader url={pdfUri} page={2} scale={scaleVal} /> */}
           <PDFReader data={arrayBuf} page={2} scale={scaleVal} />
+          <input
+            placeholder="X"
+            type="number"
+            onChange={(e) => setUserY(e.target.value)}
+          />
+          <input
+            placeholder="Y"
+            type="number"
+            onChange={(e) => setUserX(e.target.value)}
+          />
+          <input
+            placeholder="Font size"
+            type="number"
+            onChange={(e) => setUserFSize(e.target.value)}
+          />
+          <input
+            placeholder="name"
+            type="text"
+            onChange={(e) => setUserVal(e.target.value)}
+          />
+
           <button
             onClick={async () => {
               let buf = await pdfUpdateFunction();
@@ -113,7 +144,7 @@ function PdfRenderer() {
 }
 
 ////////////////////
-
+/*
 function PdfRenderer1() {
   useEffect(() => {
     getPdf();
@@ -200,28 +231,28 @@ function PdfRenderer1() {
       <h1>hello</h1>
       {arrayBuf.arr.length !== 0 ? (
         <div className="FormWrapper" onClick={console.log("clicked")}>
-          {/* <PDFReader url={pdfUri} page={1} scale={scaleVal} /> */}
-          <PDFReader data={arrayBuf.arr} page={1} scale={scaleVal} />
-          {/* <PDFReader url={pdfUri} page={2} scale={scaleVal} /> */}
-          <PDFReader data={arrayBuf.arr} page={2} scale={scaleVal} />
-          <button
-            onClick={async () => {
-              let buf = await pdfUpdateFunction();
-              setArrayBuf([]);
-              setArrayBuf({ arr: buf, chang: !arrayBuf.chang });
-              // await setArrayBuf(await pdfUpdateFunction(arrayBuf));
-            }}>
-            {" "}
-            click to update
-          </button>
-          <a href={pdfUri}>downlaod file</a>
-        </div>
-      ) : (
-        <h3>loading...</h3>
-      )}
-    </div>
-  );
-}
+          //  <PDFReader url={pdfUri} page={1} scale={scaleVal} />
+  //         <PDFReader data={arrayBuf.arr} page={1} scale={scaleVal} />
+          // {/* <PDFReader url={pdfUri} page={2} scale={scaleVal} /> */
+//         <PDFReader data={arrayBuf.arr} page={2} scale={scaleVal} />
+//         <button
+//           onClick={async () => {
+//             let buf = await pdfUpdateFunction();
+//             setArrayBuf([]);
+//             setArrayBuf({ arr: buf, chang: !arrayBuf.chang });
+//             // await setArrayBuf(await pdfUpdateFunction(arrayBuf));
+//           }}>
+//           {" "}
+//           click to update
+//         </button>
+//         <a href={pdfUri}>downlaod file</a>
+//       </div>
+//     ) : (
+//       <h3>loading...</h3>
+//     )}
+//   </div>
+// );
+// }
 
 export default PdfRenderer;
 
